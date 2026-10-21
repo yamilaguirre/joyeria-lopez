@@ -1,38 +1,52 @@
-import { Craft } from "@/components/craft";
-import { Collections } from "@/components/collections";
+import { Suspense } from "react";
+import { Contact } from "@/components/contact";
+import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
-import { House } from "@/components/house";
+import { HouseState } from "@/components/house-state";
+import { Intro } from "@/components/intro";
 import { Marquee } from "@/components/marquee";
+import { Showcase } from "@/components/showcase";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { Statement } from "@/components/statement";
-import { Visit } from "@/components/visit";
-import { Vitrina } from "@/components/vitrina";
+import { Verbs } from "@/components/verbs";
+import { readMetal, type MetalId } from "@/data/house";
 
-export default function HomePage() {
+function Site({ metal }: { metal: MetalId }) {
   return (
-    <>
-      <div className="loader" aria-hidden="true">
-        <div className="loader-ring" />
-        <p className="loader-mark">JL</p>
-        <p className="loader-label">Joyería López</p>
-      </div>
-      <div className="scroll-progress" aria-hidden="true" />
+    <HouseState initialMetal={metal}>
       <a className="skip" href="#portada">
         Saltar al contenido
       </a>
-      <SiteHeader />
       <main>
         <Hero />
+        <Intro />
         <Marquee />
-        <Statement />
-        <Collections />
-        <Vitrina />
-        <Craft />
-        <House />
-        <Visit />
+        <Showcase />
+        <Verbs />
+        <Gallery />
+        <Contact />
       </main>
       <SiteFooter />
-    </>
+    </HouseState>
+  );
+}
+
+async function Resolved({
+  searchParams,
+}: {
+  searchParams: Promise<{ metal?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  return <Site metal={readMetal(params.metal)} />;
+}
+
+export default function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ metal?: string | string[] }>;
+}) {
+  return (
+    <Suspense fallback={<Site metal="oro" />}>
+      <Resolved searchParams={searchParams} />
+    </Suspense>
   );
 }

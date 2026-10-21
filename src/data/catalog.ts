@@ -6,7 +6,6 @@ export type MetalTone = "gold" | "silver";
 
 export type Collection = {
   id: string;
-  index: string;
   name: string;
   metal: Exclude<MetalFilter, "Todas">;
   summary: string;
@@ -27,7 +26,6 @@ export type Piece = {
 export const collections: Collection[] = [
   {
     id: "alianzas",
-    index: "01",
     name: "Alianzas",
     metal: "Oro",
     summary: "El círculo que se lleva todos los días, con un perfil que no molesta en la mano.",
@@ -36,7 +34,6 @@ export const collections: Collection[] = [
   },
   {
     id: "collares",
-    index: "02",
     name: "Collares",
     metal: "Plata",
     summary: "Cadenas y dijes con peso justo: ni un hilo frágil ni una pieza que canse.",
@@ -45,7 +42,6 @@ export const collections: Collection[] = [
   },
   {
     id: "aros",
-    index: "03",
     name: "Aros",
     metal: "Piedras",
     summary: "Del punto de luz mínimo a la piedra que se quiere ver de frente.",
@@ -54,7 +50,6 @@ export const collections: Collection[] = [
   },
   {
     id: "pulseras",
-    index: "04",
     name: "Pulseras",
     metal: "Oro",
     summary: "Eslabones cortos y brazaletes cerrados para la muñeca.",
@@ -63,7 +58,6 @@ export const collections: Collection[] = [
   },
   {
     id: "piedras",
-    index: "05",
     name: "Piedras",
     metal: "Piedras",
     summary: "Esmeraldas, circones y perlas, elegidas una por una y no por lote.",
@@ -72,7 +66,6 @@ export const collections: Collection[] = [
   },
   {
     id: "medida",
-    index: "06",
     name: "A medida",
     metal: "A medida",
     summary: "Una idea tuya, dibujada en el taller hasta que la pieza cierra.",
@@ -140,22 +133,18 @@ export const pieces: Piece[] = [
 
 export const craftSteps = [
   {
-    index: "01",
     title: "Escuchar",
     text: "Qué se quiere guardar, quién lo va a llevar y en qué momento de la vida entra la pieza.",
   },
   {
-    index: "02",
     title: "Elegir",
     text: "Metal, piedra y medida. Si algo no convence en la mano, se cambia antes de cerrar.",
   },
   {
-    index: "03",
     title: "Hacer",
     text: "El taller arma, pule y engasta. El tiempo se acuerda al inicio, no al final.",
   },
   {
-    index: "04",
     title: "Entregar",
     text: "La pieza sale con su cuidado: cómo se guarda, cómo se limpia y cuándo volver a verla.",
   },

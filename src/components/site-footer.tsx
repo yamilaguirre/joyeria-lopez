@@ -1,34 +1,51 @@
-import { site } from "@/data/site";
+import { pictures } from "@/data/house";
+
+const used = [
+  pictures.oroGriego,
+  pictures.oroSerpiente,
+  pictures.ashmolean,
+  pictures.esmeralda,
+  pictures.midyat,
+  pictures.posy,
+  pictures.eligio,
+  pictures.taller,
+];
 
 export function SiteFooter() {
-  const instagram = site.instagram ? `https://instagram.com/${site.instagram}` : null;
-  const mail = site.email ? `mailto:${site.email}` : null;
-
   return (
     <footer className="site-footer">
-      <div>
-        <p className="brand-mark" aria-hidden="true">
-          JL
-        </p>
-        <p className="footer-name">Joyería López</p>
-        <p>Casa familiar de joyas · {site.place}</p>
-      </div>
-      <nav aria-label="Pie de página">
-        <a href="#casa">La casa</a>
-        <a href="#colecciones">Colecciones</a>
-        <a href="#vitrina">Vitrina</a>
-        <a href="#oficio">Oficio</a>
-        <a href="#encargo">Encargo</a>
-      </nav>
-      <div className="footer-meta">
-        {instagram ? (
-          <a href={instagram} target="_blank" rel="noreferrer">
-            @{site.instagram}
+      <div className="footer-top">
+        <div>
+          <h2>
+            Cuéntanos
+            <br />
+            la pieza
+          </h2>
+          <a className="footer-action" href="#encargo">
+            Encargar
           </a>
-        ) : (
-          <span>Instagram de la casa, pronto</span>
-        )}
-        {mail ? <a href={mail}>{site.email}</a> : null}
+        </div>
+        <nav aria-label="Pie de página">
+          <a href="#oficio">Oficio</a>
+          <a href="#vitrina">Vitrina</a>
+          <a href="#archivo">Archivo</a>
+          <a href="#encargo">Encargo</a>
+        </nav>
+      </div>
+      <div className="footer-end">
+        <p className="credits">
+          Imágenes de archivo, no de la casa.{" "}
+          {used.map((picture, index) => (
+            <span key={picture.src}>
+              {index > 0 ? " " : null}
+              <a href={picture.page}>{picture.caption}</a> {picture.credit}.{" "}
+              <a href={picture.licenseUrl}>{picture.license}</a>.
+            </span>
+          ))}
+        </p>
+        <p className="wordmark" aria-hidden="true">
+          Joyería López
+        </p>
       </div>
     </footer>
   );

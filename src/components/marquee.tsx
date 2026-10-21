@@ -1,17 +1,15 @@
-import { marqueeItems } from "@/data/catalog";
+const phrase = "Joyería López";
 
 export function Marquee() {
-  const loop = [...marqueeItems, ...marqueeItems];
+  const row = Array.from({ length: 8 }, (_, index) => (
+    <span key={index}>{phrase}</span>
+  ));
 
   return (
     <div className="marquee" aria-hidden="true">
       <div className="marquee-track">
-        {loop.map((item, index) => (
-          <span key={`${item}-${index}`}>
-            {item}
-            <i />
-          </span>
-        ))}
+        {row}
+        {row}
       </div>
     </div>
   );
