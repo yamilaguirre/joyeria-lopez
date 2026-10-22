@@ -2,7 +2,7 @@ import { pictures } from "@/data/house";
 
 export function Intro() {
   return (
-    <section className="intro" id="casa" aria-labelledby="casa-title">
+        <section className="intro" id="casa" aria-labelledby="casa-title">
       <div className="intro-copy">
         <h2 id="casa-title">La pieza se encarga</h2>
         <p className="lead-in">

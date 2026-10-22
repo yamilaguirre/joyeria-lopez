@@ -5,11 +5,11 @@ import { metals, metalIds, pictures, pieces, pieceIds, type PieceId } from "@/da
 import { useHouse } from "@/components/house-state";
 
 export function Contact() {
-  const { metal, piece, setMetal, setPiece } = useHouse();
+  const { metal, piece, setMetal, setPiece, list } = useHouse();
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
-  const [done, setDone] = useState<{ name: string; piece: string; metal: string } | null>(null);
+  const [done, setDone] = useState<{ name: string; piece: string; metal: string; refs: string } | null>(null);
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,29 +24,29 @@ export function Contact() {
       name: cleanName,
       piece: pieces[piece].tab,
       metal: metals[metal].label,
+      refs: list.map((item) => item.caption).join(", "),
     });
   }
 
   return (
     <section className="contact" id="encargo" aria-labelledby="encargo-title">
-      <h2 id="encargo-title">Joyería López</h2>
-      <p className="row">Bolivia</p>
-      <p className="row">Dirección por confirmar</p>
-      <p className="row">Horario por confirmar</p>
-      <p className="row">Encargo por conversación</p>
-      <div className="greeting">
-        <p>Hola</p>
-        <a href="#encargo-form">Escribir</a>
+      <div className="contact-intro">
+        <h2 id="encargo-title">Cuéntanos la pieza</h2>
+        <p>Bolivia. La dirección y el horario se publican cuando la casa los tenga. El encargo, por ahora, se deja aquí.</p>
       </div>
       {done ? (
         <p className="done" role="status">
           Quedó en esta página, {done.name}. Pediste {done.piece.toLowerCase()} en{" "}
-          {done.metal.toLowerCase()}. No salió a ningún correo: la casa todavía no publicó uno.
+          {done.metal.toLowerCase()}.
+          {done.refs ? ` Referencias del archivo: ${done.refs.replace(/\.$/, "")}.` : ""} No salió a ningún correo: la casa todavía no publicó uno.
         </p>
       ) : (
         <form id="encargo-form" onSubmit={onSubmit}>
           <p className="form-note">
             El mensaje se queda en el navegador. Esta página todavía no lo envía.
+            {list.length
+              ? ` Llevas ${list.length} ${list.length === 1 ? "referencia" : "referencias"} en la lista.`
+              : ""}
           </p>
           <label>
             Tu nombre
@@ -102,7 +102,9 @@ export function Contact() {
               {error}
             </p>
           ) : null}
-          <button type="submit">Dejar el encargo</button>
+          <button className="btn btn-dark" type="submit">
+            Dejar el encargo
+          </button>
           <figure className="form-aside">
             <img
               src={pictures.oroSerpiente.src}

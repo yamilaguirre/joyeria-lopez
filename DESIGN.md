@@ -1,23 +1,14 @@
-# Joyería López
+# Design
 
-The page is the door. There is no published street, so the surname is the facade.
+The page uses the shop-window structure of a large jewelry store: a fixed bar with the name, a search field and icons, a full-screen photograph, a white headline and a dark button. Below that, round categories, a grid marked “Por encargo”, and a dark commission block.
 
-## Thesis
+It is Joyería López, not another brand. No logo, prices, discounts or product photos were taken from elsewhere. Archive pictures stay credited. The bag does not sell anything. The form stays on the page.
 
-A stranger should know, in the first screen, that this is a family jewelry house in Bolivia and that the piece is commissioned, not picked off a shelf.
+## Direction contract
 
-## World
-
-White ground, black type, one signal red. Hanken Grotesk only. The red belongs to Encargar. Photographs are museum and archive objects, captioned as such, never presented as the house’s own work.
-
-## First screen
-
-López, cropped only by the band it sits in, with the sentence “Casa de joyas en Bolivia” on the photograph and the metal choice beside it. Oro, Plata and Piedra change that photograph and the commission.
-
-## What is still empty on purpose
-
-Address, hours, phone, email and WhatsApp stay blank until they are written in `src/data/site.ts`. The commission form keeps the note in the browser. It does not send mail.
-
-## Seed
-
-Taste direction seed 1346314136. Name as monument. Signal red on white. The concept board was skipped because the visual judgment was delegated.
+THESIS: The first screen is a vitrine, the way a jewelry house opens a shop window. It refuses the gray tile grid.
+OWN-WORLD: White ground, charcoal buttons, a diamond mark, Cormorant for the framed title, Raleway for the rest.
+STORY: The visitor names the house, chooses a metal, and leaves a commission on the page.
+FIRST VIEWPORT: Centered wordmark, a row of links, the archive photograph full bleed, the title in a white frame on the left, then Ver piezas and Dejar un encargo.
+FORM: The visitor pinned Verónica Hecht's vitrine and asked to improve it. seed: none (pinned reference).
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.

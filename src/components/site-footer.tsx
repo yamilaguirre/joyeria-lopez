@@ -14,39 +14,39 @@ const used = [
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="footer-top">
+      <div className="footer-grid">
         <div>
-          <h2>
-            Cuéntanos
-            <br />
-            la pieza
-          </h2>
-          <a className="footer-action" href="#encargo">
-            Encargar
-          </a>
+          <p className="footer-brand">López</p>
+          <p>Casa familiar de joyas en Bolivia. La pieza se encarga en una conversación.</p>
         </div>
-        <nav aria-label="Pie de página">
-          <a href="#oficio">Oficio</a>
-          <a href="#vitrina">Vitrina</a>
-          <a href="#archivo">Archivo</a>
-          <a href="#encargo">Encargo</a>
-        </nav>
+        <details className="footer-col">
+          <summary>Explorar</summary>
+          <a href="#vitrina">Piezas</a>
+          <a href="?metal=oro#portada">Oro</a>
+          <a href="?metal=plata#portada">Plata</a>
+          <a href="?metal=piedra#portada">Piedra</a>
+        </details>
+        <details className="footer-col">
+          <summary>La casa</summary>
+          <a href="#casa">Cómo trabaja</a>
+          <a href="#oficio">El archivo</a>
+          <a href="#encargo">Dejar un encargo</a>
+        </details>
+        <details className="footer-col">
+          <summary>Encargo</summary>
+          <p>Dirección, horario y correo se publican cuando la casa los tenga.</p>
+        </details>
       </div>
-      <div className="footer-end">
-        <p className="credits">
-          Imágenes de archivo, no de la casa.{" "}
-          {used.map((picture, index) => (
-            <span key={picture.src}>
-              {index > 0 ? " " : null}
-              <a href={picture.page}>{picture.caption}</a> {picture.credit}.{" "}
-              <a href={picture.licenseUrl}>{picture.license}</a>.
-            </span>
-          ))}
-        </p>
-        <p className="wordmark" aria-hidden="true">
-          Joyería López
-        </p>
-      </div>
+      <p className="credits">
+        Imágenes de archivo, no de la casa.{" "}
+        {used.map((picture, index) => (
+          <span key={picture.src}>
+            {index > 0 ? " " : null}
+            <a href={picture.page}>{picture.caption}</a> {picture.credit}.{" "}
+            <a href={picture.licenseUrl}>{picture.license}</a>.
+          </span>
+        ))}
+      </p>
     </footer>
   );
 }

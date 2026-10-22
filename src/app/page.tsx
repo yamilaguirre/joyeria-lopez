@@ -1,13 +1,10 @@
 import { Suspense } from "react";
 import { Contact } from "@/components/contact";
-import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
 import { HouseState } from "@/components/house-state";
 import { Intro } from "@/components/intro";
-import { Marquee } from "@/components/marquee";
 import { Showcase } from "@/components/showcase";
 import { SiteFooter } from "@/components/site-footer";
-import { Verbs } from "@/components/verbs";
 import { readMetal, type MetalId } from "@/data/house";
 
 function Site({ metal }: { metal: MetalId }) {
@@ -18,11 +15,8 @@ function Site({ metal }: { metal: MetalId }) {
       </a>
       <main>
         <Hero />
-        <Intro />
-        <Marquee />
         <Showcase />
-        <Verbs />
-        <Gallery />
+        <Intro />
         <Contact />
       </main>
       <SiteFooter />
