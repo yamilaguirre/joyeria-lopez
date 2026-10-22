@@ -158,24 +158,25 @@ h2 {
 }
 
 .links {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid var(--ink);
 }
 
 .links a {
   display: flex;
-  align-items: flex-start;
-  min-height: 64px;
-  padding: 12px 16px;
-  background: var(--surface);
+  align-items: center;
+  min-height: 48px;
+  padding: 0;
+  background: transparent;
   text-decoration: none;
   font-size: 1rem;
   line-height: 1.2;
 }
 
 .links a:hover {
-  background: var(--tile-2);
+  text-decoration: underline;
 }
 
 .rails {
@@ -237,6 +238,7 @@ h2 {
   grid-row: 1 / -1;
   grid-column: 1;
   height: 100%;
+  transform: scale(1.45);
 }
 
 .statement {
@@ -849,8 +851,8 @@ select {
 }
 
 @keyframes drift {
-  from { transform: scale(1); }
-  to { transform: scale(1.06); }
+  from { transform: scale(1.45); }
+  to { transform: scale(1.55); }
 }
 
 @keyframes ticker {
@@ -871,6 +873,7 @@ select {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .marquee-track { transform: none; }
+  .stage img { transform: scale(1.45); }
 }
 
 @media (max-width: 980px) {
@@ -895,8 +898,9 @@ select {
   }
 
   .links {
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    min-height: 48px;
   }
 
   .rails {
@@ -907,24 +911,28 @@ select {
     order: 3;
     display: flex;
     flex-direction: column;
-    overflow: visible;
-    background: transparent;
+    overflow: hidden;
+    background: var(--surface);
   }
 
   .stage img {
     position: relative;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
+    max-height: 42svh;
     height: auto;
+    transform: none;
+    animation: none;
   }
 
   .statement {
-    font-size: 6vw;
-    padding: 16px 0 0;
-    background: transparent;
+    align-self: stretch;
+    width: 100%;
+    padding: 16px;
+    background: var(--surface);
   }
 
   .statement p {
-    font-size: 6vw;
+    font-size: clamp(22px, 3.2vw, 32px);
   }
 
   .rail-left {
@@ -942,8 +950,8 @@ select {
   .rail-right {
     order: 4;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-template-rows: 72px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: 56px 56px;
     gap: 6px;
   }
 
@@ -953,7 +961,7 @@ select {
   }
 
   .swatch.action {
-    grid-column: span 2;
+    grid-column: 1 / -1;
   }
 
   .intro {
@@ -995,8 +1003,6 @@ select {
     padding: 20px 0 0;
   }
 
-  .showcase-text h2,
-  .statement p,
   .marquee-track,
   .site-footer h2,
   .contact h2,
@@ -1005,9 +1011,8 @@ select {
     font-size: 9.6vw;
   }
 
-  .showcase-text h2,
-  .statement p {
-    font-size: 6vw;
+  .showcase-text h2 {
+    font-size: clamp(28px, 6vw, 40px);
   }
 
   .cells {
