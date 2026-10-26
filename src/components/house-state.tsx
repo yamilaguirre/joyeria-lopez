@@ -1,20 +1,27 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import type { MetalId, Picture, PieceId } from "@/data/house";
+import type { MetalId, PieceId } from "@/data/house";
 
-export type ListItem = Pick<Picture, "src" | "caption" | "alt">;
+export type ShownPiece = {
+  src: string;
+  alt: string;
+  caption: string;
+  detail: string;
+};
+
+export type ListItem = Pick<ShownPiece, "src" | "caption" | "alt">;
 
 type HouseState = {
   metal: MetalId;
   piece: PieceId;
   query: string;
   list: ListItem[];
-  active: Picture | null;
+  active: ShownPiece | null;
   setMetal: (metal: MetalId) => void;
   setPiece: (piece: PieceId) => void;
   setQuery: (query: string) => void;
-  setActive: (picture: Picture | null) => void;
+  setActive: (picture: ShownPiece | null) => void;
   addToList: (item: ListItem) => void;
   removeFromList: (src: string) => void;
   chooseMetal: (event: React.MouseEvent<HTMLAnchorElement>, metal: MetalId) => void;
@@ -33,7 +40,7 @@ export function HouseState({
   const [piece, setPiece] = useState<PieceId>("alianza");
   const [query, setQuery] = useState("");
   const [list, setList] = useState<ListItem[]>([]);
-  const [active, setActive] = useState<Picture | null>(null);
+  const [active, setActive] = useState<ShownPiece | null>(null);
 
   useEffect(() => {
     setMetalState(initialMetal);

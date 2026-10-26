@@ -405,6 +405,78 @@ select {
   aspect-ratio: 1;
 }
 
+.phone-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+}
+
+.phone-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.phone-list span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.visit {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 40px;
+  padding: 72px 40px;
+  background: var(--soft);
+}
+
+.visit h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.visit p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.hours {
+  margin: 0;
+}
+
+.hours div {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.hours dt {
+  font-weight: 500;
+}
+
+.hours dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+.clips {
+  padding: 8px 40px 72px;
+}
+
+.clips video,
+.product video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #111;
+}
+
 .bag-list button {
   width: auto;
 }
@@ -1076,6 +1148,8 @@ form button {
 
   .showcase,
   .intro,
+  .visit,
+  .clips,
   .contact,
   .site-footer {
     padding: 40px 20px;
@@ -1083,6 +1157,7 @@ form button {
 
   .tiles,
   .grid,
+  .visit,
   .intro,
   .contact,
   .footer-grid {
@@ -1102,6 +1177,7 @@ form button {
 @media (max-width: 560px) {
   .tiles,
   .grid,
+  .visit,
   .footer-grid,
   .intro,
   .contact {

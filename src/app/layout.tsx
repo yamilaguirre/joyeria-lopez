@@ -12,7 +12,7 @@ const sans = Montserrat({
 export const metadata: Metadata = {
   title: "Joyería López",
   description:
-    "Casa familiar de joyas en Bolivia. La pieza se encarga en una conversación: oro, plata o piedra.",
+    "Joyería López, en Adolfo Mier entre Potosí y 6 de Octubre, Oruro. Oro de 18 kilates, plata, anillos de promoción, cadenas y reconocimientos a láser.",
   applicationName: "Joyería López",
 };
 

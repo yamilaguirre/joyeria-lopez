@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gallery, metalIds, metals, pieces, pieceIds, type MetalId, type Picture } from "@/data/house";
+import { departments, pieces as catalog, pieceHaystack, pieceSrc, type VitrinaPiece } from "@/data/vitrina";
+import { site } from "@/data/site";
 import { Drawer } from "@/components/drawer";
 import { useHouse } from "@/components/house-state";
 
@@ -68,7 +69,8 @@ function Icon({ name }: { name: "search" | "user" | "bag" | "menu" | "close" | "
 }
 
 export function Hero() {
-  const { metal, setMetal, query, setQuery, list, removeFromList, setActive, setPiece, active } = useHouse();
+  const { query, setQuery, list, removeFromList, setActive, active } = useHouse();
+  const [slide, setSlide] = useState(0);
   const [solid, setSolid] = useState(false);
   const [menu, setMenu] = useState(false);
   const [account, setAccount] = useState(false);
@@ -83,11 +85,10 @@ export function Hero() {
   const dragOriginY = useRef(0);
   const searchRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLElement>(null);
-  const current = metals[metal];
-  const index = metalIds.indexOf(metal);
+  const current = departments[slide] ?? departments[0];
   const needle = query.trim().toLowerCase();
   const results = needle
-    ? gallery.filter((picture) => `${picture.caption} ${picture.alt}`.toLowerCase().includes(needle)).slice(0, 6)
+    ? catalog.filter((item) => pieceHaystack(item).includes(needle)).slice(0, 6)
     : [];
   const blocked = menu || account || bag || searchOpen || active !== null;
 
@@ -120,7 +121,7 @@ export function Hero() {
     if (reduce || paused || hovering || blocked || !inView) return;
     const timer = window.setTimeout(() => step(1), SLIDE_MS);
     return () => window.clearTimeout(timer);
-  }, [reduce, paused, hovering, blocked, inView, metal]);
+  }, [reduce, paused, hovering, blocked, inView, slide]);
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -137,7 +138,7 @@ export function Hero() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [metal, menu, account, bag, searchOpen]);
+  }, [slide, menu, account, bag, searchOpen]);
 
   useEffect(() => {
     if (!menu) return;
@@ -146,8 +147,7 @@ export function Hero() {
   }, [menu]);
 
   function step(direction: -1 | 1) {
-    const next = metalIds[(index + direction + metalIds.length) % metalIds.length];
-    setMetal(next);
+    setSlide((currentIndex) => (currentIndex + direction + departments.length) % departments.length);
   }
 
   function closeLayers() {
@@ -157,14 +157,20 @@ export function Hero() {
     setBag(false);
   }
 
-  function goMetal(next: MetalId) {
-    setMetal(next);
+  function goDepartment(index: number) {
+    setSlide(index);
     closeLayers();
-    document.getElementById("portada")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    const id = departments[index]?.id;
+    document.getElementById(id ?? "portada")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   }
 
-  function openPiece(picture: Picture) {
-    setActive(picture);
+  function openPiece(item: VitrinaPiece) {
+    setActive({
+      src: pieceSrc(item),
+      alt: item.alt,
+      caption: item.caption,
+      detail: item.detail,
+    });
     closeLayers();
   }
 
@@ -208,15 +214,15 @@ export function Hero() {
           onSubmit={(event) => {
             event.preventDefault();
             setSearchOpen(false);
-            document.getElementById("archivo")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+            document.getElementById("vitrina")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
           }}
         >
           <Icon name="search" />
           <input
             ref={searchRef}
             type="search"
-            placeholder="Buscar en el archivo"
-            aria-label="Buscar en el archivo"
+            placeholder="Buscar una pieza"
+            aria-label="Buscar una pieza"
             aria-expanded={searchOpen}
             aria-controls="busqueda"
             value={query}
@@ -279,12 +285,12 @@ export function Hero() {
             {needle ? (
               results.length ? (
                 <ul>
-                  {results.map((picture) => (
-                    <li key={picture.src}>
-                      <button type="button" onClick={() => openPiece(picture)}>
-                        <img src={picture.src} alt="" />
+                  {results.map((item) => (
+                    <li key={item.id}>
+                      <button type="button" onClick={() => openPiece(item)}>
+                        <img src={pieceSrc(item)} alt="" />
                         <span>
-                          <strong>{picture.caption}</strong>
+                          <strong>{item.caption}</strong>
                           <em>Por encargo</em>
                         </span>
                       </button>
@@ -296,11 +302,11 @@ export function Hero() {
               )
             ) : (
               <div className="suggest">
-                <p>Buscar por metal</p>
+                <p>Buscar por apartado</p>
                 <div>
-                  {metalIds.map((id) => (
-                    <button key={id} type="button" onClick={() => goMetal(id)}>
-                      {metals[id].label}
+                  {departments.map((department, index) => (
+                    <button key={department.id} type="button" onClick={() => goDepartment(index)}>
+                      {department.label}
                     </button>
                   ))}
                 </div>
@@ -315,26 +321,11 @@ export function Hero() {
           <button type="button" className="scrim" aria-label="Cerrar menú" onClick={() => setMenu(false)} />
           <nav className="mega" ref={menuRef} aria-label="Secciones">
             <div>
-              <p>Metal</p>
-              {metalIds.map((id) => (
-                <button key={id} type="button" onClick={() => goMetal(id)} aria-current={metal === id ? "true" : undefined}>
-                  {metals[id].label}
+              <p>Vitrina</p>
+              {departments.map((department, index) => (
+                <button key={department.id} type="button" onClick={() => goDepartment(index)} aria-current={slide === index ? "true" : undefined}>
+                  {department.label}
                 </button>
-              ))}
-            </div>
-            <div>
-              <p>Piezas</p>
-              {pieceIds.map((id) => (
-                <a
-                  key={id}
-                  href="#archivo"
-                  onClick={() => {
-                    setPiece(id);
-                    setMenu(false);
-                  }}
-                >
-                  {pieces[id].tab}
-                </a>
               ))}
             </div>
             <div>
@@ -342,23 +333,46 @@ export function Hero() {
               <a href="#casa" onClick={() => setMenu(false)}>
                 Cómo trabaja
               </a>
-              <a href="#oficio" onClick={() => setMenu(false)}>
-                El archivo
+              <a href="#visita" onClick={() => setMenu(false)}>
+                Dirección y horario
+              </a>
+              <a href="#movimiento" onClick={() => setMenu(false)}>
+                En movimiento
               </a>
               <a href="#encargo" onClick={() => setMenu(false)}>
                 Dejar un encargo
               </a>
             </div>
+            <div>
+              <p>Teléfonos</p>
+              {site.phones.map((phone) => (
+                <a key={phone.tel} href={`tel:${phone.tel}`} onClick={() => setMenu(false)}>
+                  {phone.number}
+                  {phone.label === "Principal" ? " · principal" : ""}
+                </a>
+              ))}
+            </div>
             <figure>
-              <img src={current.picture.src} alt={current.picture.alt} />
+              <img src={pieceSrc(current)} alt={current.alt} />
               <figcaption>{current.label}</figcaption>
             </figure>
           </nav>
         </div>
       ) : null}
 
-      <Drawer open={account} title="La cuenta" onClose={() => setAccount(false)}>
-        <p>La casa todavía no publicó un correo. El encargo se deja en esta página y no se envía a ningún lado.</p>
+      <Drawer open={account} title="La casa" onClose={() => setAccount(false)}>
+        <p>
+          {site.address}, {site.city}. {site.hours[0].day}: {site.hours[0].time}. {site.hours[1].day}: {site.hours[1].time}.
+        </p>
+        <ul className="phone-list">
+          {site.phones.map((phone) => (
+            <li key={phone.tel}>
+              <a href={`tel:${phone.tel}`}>{phone.number}</a>
+              <span>{phone.label}</span>
+            </li>
+          ))}
+        </ul>
+        <a href={`sms:${site.sms}`}>Escribir un mensaje</a>
         <a className="btn-dark" href="#encargo" onClick={() => setAccount(false)}>
           Dejar un encargo
         </a>
@@ -366,7 +380,7 @@ export function Hero() {
 
       <Drawer open={bag} title={list.length ? "Tu encargo" : "Nada en la lista"} onClose={() => setBag(false)}>
         {list.length === 0 ? (
-          <p>Joyería López no vende en línea. Si una foto del archivo te sirve de referencia, súmala desde la ficha.</p>
+          <p>Joyería López no vende en línea. Si una foto te sirve de referencia, súmala desde la ficha y llama a la casa.</p>
         ) : (
           <ul className="bag-list">
             {list.map((item) => (
@@ -374,7 +388,7 @@ export function Hero() {
                 <img src={item.src} alt="" />
                 <span>
                   <strong>{item.caption}</strong>
-                  <em>Referencia, no es de la casa</em>
+                  <em>Referencia para el encargo</em>
                 </span>
                 <button type="button" onClick={() => removeFromList(item.src)}>
                   Quitar
@@ -400,52 +414,50 @@ export function Hero() {
         onPointerCancel={onPointerUp}
       >
         <img
-          key={current.picture.src}
+          key={current.file}
           className="hero-photo"
-          src={current.picture.src}
-          alt={current.picture.alt}
-          width={current.picture.width}
-          height={current.picture.height}
+          src={pieceSrc(current)}
+          alt={current.alt}
           style={reduce ? undefined : { transform: `translateX(${dragX * 0.15}px)` }}
           draggable={false}
         />
         <div className="hero-copy">
-          <p>Casa familiar en Bolivia</p>
+          <p>Joyería López · Oruro</p>
           <h1>
-            La pieza
+            {current.title[0]}
             <br />
-            se encarga
+            {current.title[1]}
           </h1>
           <p className="hero-line" aria-live="polite">
-            {current.statement}
+            {current.line}
           </p>
-          <a className="btn-dark" href="#encargo">
-            Dejar un encargo
+          <a className="btn-dark" href={`#${current.id}`}>
+            Ver {current.label.toLowerCase()}
           </a>
-          <p className="hero-note">La foto es de archivo. No es una pieza de la casa.</p>
+          <p className="hero-note">Foto de la casa. La pieza se encarga en el local.</p>
         </div>
         <div className="hero-nav">
-          <div className="dots" role="tablist" aria-label="Metales">
-            {metalIds.map((id) => (
+          <div className="dots" role="tablist" aria-label="Apartados">
+            {departments.map((department, index) => (
               <button
-                key={id}
+                key={department.id}
                 type="button"
                 role="tab"
-                aria-selected={id === metal}
-                aria-label={metals[id].label}
-                onClick={() => setMetal(id)}
+                aria-selected={index === slide}
+                aria-label={department.label}
+                onClick={() => setSlide(index)}
               >
-                <span className={id === metal && !reduce ? `dot-fill is-run${paused || hovering || blocked || !inView ? " is-hold" : ""}` : "dot-fill"} />
+                <span className={index === slide && !reduce ? `dot-fill is-run${paused || hovering || blocked || !inView ? " is-hold" : ""}` : "dot-fill"} />
               </button>
             ))}
           </div>
           <button type="button" aria-label={paused ? "Reanudar" : "Pausar"} onClick={() => setPaused((value) => !value)}>
             <Icon name={paused ? "play" : "pause"} />
           </button>
-          <button type="button" aria-label="Metal anterior" onClick={() => step(-1)}>
+          <button type="button" aria-label="Apartado anterior" onClick={() => step(-1)}>
             ‹
           </button>
-          <button type="button" aria-label="Metal siguiente" onClick={() => step(1)}>
+          <button type="button" aria-label="Apartado siguiente" onClick={() => step(1)}>
             ›
           </button>
         </div>

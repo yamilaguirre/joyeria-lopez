@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { metals, metalIds, pictures, pieces, pieceIds, type PieceId } from "@/data/house";
+import { metals, metalIds } from "@/data/house";
+import { departments, pieceSrc } from "@/data/vitrina";
+import { site } from "@/data/site";
 import { useHouse } from "@/components/house-state";
 
 export function Contact() {
-  const { metal, piece, setMetal, setPiece, list } = useHouse();
+  const { metal, setMetal, list } = useHouse();
+  const [kind, setKind] = useState(departments[0].id);
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
   const [done, setDone] = useState<{ name: string; piece: string; metal: string; refs: string } | null>(null);
+  const chosen = departments.find((department) => department.id === kind) ?? departments[0];
+  const aside = departments[2];
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,7 +27,7 @@ export function Contact() {
     setError("");
     setDone({
       name: cleanName,
-      piece: pieces[piece].tab,
+      piece: chosen.label,
       metal: metals[metal].label,
       refs: list.map((item) => item.caption).join(", "),
     });
@@ -32,13 +37,15 @@ export function Contact() {
     <section className="contact" id="encargo" aria-labelledby="encargo-title">
       <div className="contact-intro">
         <h2 id="encargo-title">Cuéntanos la pieza</h2>
-        <p>Bolivia. La dirección y el horario se publican cuando la casa los tenga. El encargo, por ahora, se deja aquí.</p>
+        <p>
+          {site.address}, {site.city}. Lunes a sábado, de 8:30 a 12:30 y de 14:30 a 20:30. Domingo, cerrada. El recuadro de abajo se queda en esta página: para encargar, llama o escribe.
+        </p>
       </div>
       {done ? (
         <p className="done" role="status">
           Quedó en esta página, {done.name}. Pediste {done.piece.toLowerCase()} en{" "}
           {done.metal.toLowerCase()}.
-          {done.refs ? ` Referencias del archivo: ${done.refs.replace(/\.$/, "")}.` : ""} No salió a ningún correo: la casa todavía no publicó uno.
+          {done.refs ? ` Referencias: ${done.refs.replace(/\.$/, "")}.` : ""} No salió a ningún correo: la casa todavía no publicó uno.
         </p>
       ) : (
         <form id="encargo-form" onSubmit={onSubmit}>
@@ -61,12 +68,12 @@ export function Contact() {
             La pieza
             <select
               name="pieza"
-              value={piece}
-              onChange={(event) => setPiece(event.target.value as PieceId)}
+              value={kind}
+              onChange={(event) => setKind(event.target.value as (typeof departments)[number]["id"])}
             >
-              {pieceIds.map((id) => (
-                <option key={id} value={id}>
-                  {pieces[id].tab}
+              {departments.map((department) => (
+                <option key={department.id} value={department.id}>
+                  {department.label}
                 </option>
               ))}
             </select>
@@ -106,13 +113,8 @@ export function Contact() {
             Dejar el encargo
           </button>
           <figure className="form-aside">
-            <img
-              src={pictures.oroSerpiente.src}
-              alt={pictures.oroSerpiente.alt}
-              width={pictures.oroSerpiente.width}
-              height={pictures.oroSerpiente.height}
-            />
-            <figcaption>{pictures.oroSerpiente.caption}</figcaption>
+            <img src={pieceSrc(aside)} alt={aside.alt} />
+            <figcaption>Anillo grabado de la casa.</figcaption>
           </figure>
         </form>
       )}
