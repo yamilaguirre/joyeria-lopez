@@ -6,7 +6,10 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="footer-grid">
         <div>
-          <p className="footer-brand">López</p>
+          <div className="footer-lockup">
+            <img className="footer-mark" src="/brand/mark.png" alt="" width={621} height={720} />
+            <img className="footer-wordmark" src="/brand/wordmark.png" alt="Joyería López" width={1003} height={160} />
+          </div>
           <p>
             {site.people}. Joyería en {site.city}, en {site.address}.
           </p>
