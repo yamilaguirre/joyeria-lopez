@@ -205,7 +205,7 @@ export function Hero() {
     <div className="top" id="portada">
       <header className={barSolid ? "bar bar-solid" : "bar"}>
         <a className="logo" href="#portada">
-          López
+          <img src="/brand/mark.png" alt="Joyería López" width={621} height={720} />
         </a>
         <form
           className={searchOpen ? "search is-open" : "search"}
@@ -422,7 +422,7 @@ export function Hero() {
           draggable={false}
         />
         <div className="hero-copy">
-          <p>Joyería López · Oruro</p>
+          <p className="kicker">Joyería López · Oruro</p>
           <h1>
             {current.title[0]}
             <br />
